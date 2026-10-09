@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset='UTF-8'/>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0' name='viewport'/>
+  <title>EduAlimun Exam Portal</title>
+  <link href='https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap' rel='stylesheet'/>
+
+  <style type='text/css'>
+    :root {
+      --navy-deep:#06121f;
+      --navy:#0b2236;
+      --navy-card:#102d44;
+      --emerald:#16c98d;
+      --emerald-dark:#0e8f63;
+      --gold:#f4b740;
+      --text-light:#eaf4ef;
+      --text-dim:#90a8b3;
+      --danger:#ff5d6c;
+      --border:#1d4259;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+    body {
+      font-family:'Hind Siliguri',sans-serif;
+      background:radial-gradient(circle at 20% 0%, #0d3a35 0%, var(--navy-deep) 45%, #050d15 100%);
+      background-attachment:fixed;
+      margin:0;padding:10px;
+      min-height:100vh;
+      color:var(--text-light);
+    }
+    #main-wrapper{width:100%!important;float:none!important;margin:0!important;padding:0!important;}
+    #content-wrapper{width:100%!important;}
+
+    .edu-wrap {
+      max-width:680px;
+      background:linear-gradient(160deg,var(--navy-card) 0%,var(--navy) 100%);
+      margin:10px auto 30px;
+      border-radius:18px;
+      box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px var(--border);
+      overflow:hidden;
+    }
+    .edu-header {
+      text-align:center;padding:26px 18px 16px;
+      background:linear-gradient(135deg,#0a2e26 0%,#0c3a2c 50%,#0a2e26 100%);
+      border-bottom:2px solid var(--emerald);position:relative;
+    }
+    .edu-header::before {
+      content:"";position:absolute;top:0;left:0;right:0;height:3px;
+      background:linear-gradient(90deg,var(--emerald),var(--gold),var(--emerald));
+    }
+    .brand-eyebrow{letter-spacing:2px;font-size:11px;color:var(--gold);font-weight:600;text-transform:uppercase;margin-bottom:6px;}
+    .edu-header h1{color:#fff;margin:0;font-size:26px;font-weight:700;text-shadow:0 2px 12px rgba(22,201,141,.35);}
+    .edu-header h1 span{color:var(--emerald);}
+    .edu-header h3 {
+      color:var(--text-light);margin:10px auto 0;font-size:15px;font-weight:600;
+      background:rgba(255,255,255,.06);padding:8px 14px;border-radius:30px;
+      display:inline-block;border:1px solid var(--border);
+    }
+    .exam-date-badge {
+      display:block;background:rgba(244,183,64,.12);color:var(--gold);
+      padding:9px 12px;margin-top:12px;border-radius:8px;font-weight:600;
+      font-size:13px;border:1px solid rgba(244,183,64,.35);
+    }
+    .nav-tabs {
+      display:flex;margin:16px 16px 0;
+      background:rgba(0,0,0,.25);border-radius:10px;padding:5px;border:1px solid var(--border);
+    }
+    .tab {
+      padding:11px 10px;cursor:pointer;font-weight:600;color:var(--text-dim);
+      border-radius:8px;width:50%;text-align:center;transition:all .25s ease;font-size:14.5px;
+      user-select:none;
+    }
+    .tab.active{color:#06121f;background:linear-gradient(135deg,var(--emerald),#1fe3a5);box-shadow:0 4px 14px rgba(22,201,141,.4);}
+    .page{display:none;padding:16px;}
+    .page.active{display:block;}
+    .timer-box {
+      font-size:16px;color:var(--danger);font-weight:700;text-align:center;
+      margin:14px 16px 0;padding:10px;
+      background:rgba(255,93,108,.1);border:1px solid rgba(255,93,108,.35);
+      border-radius:8px;display:none;letter-spacing:.5px;
+    }
+    input[type="text"] {
+      width:100%;padding:13px;margin:10px 0;
+      border:2px solid var(--border);border-radius:10px;
+      background:rgba(0,0,0,.25);color:var(--text-light);
+      font-family:'Hind Siliguri',sans-serif;font-size:15px;outline:none;
+      transition:border-color .2s;
+    }
+    input[type="text"]::placeholder{color:var(--text-dim);}
+    input[type="text"]:focus{border-color:var(--emerald);box-shadow:0 0 0 3px rgba(22,201,141,.15);}
+    .edu-btn {
+      background:linear-gradient(135deg,var(--emerald) 0%,var(--emerald-dark) 100%);
+      color:#06241a;border:none;padding:14px;width:100%;
+      border-radius:10px;cursor:pointer;font-size:15.5px;font-weight:700;
+      font-family:'Hind Siliguri',sans-serif;letter-spacing:.3px;
+      transition:transform .15s ease,box-shadow .15s ease;
+      box-shadow:0 6px 18px rgba(22,201,141,.3);
+      -webkit-appearance:none;appearance:none;touch-action:manipulation;
+    }
+    .edu-btn:active{transform:scale(.98);}
+    .edu-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;}
+    .q-card {
+      background:rgba(255,255,255,.03);border:1px solid var(--border);
+      padding:15px;margin-bottom:13px;border-radius:12px;
+    }
+    .q-card strong{color:#fff;font-size:15px;line-height:1.6;}
+    .option {
+      padding:11px 13px;border:1px solid var(--border);margin-top:8px;
+      border-radius:8px;cursor:pointer;background:rgba(255,255,255,.02);
+      color:var(--text-light);transition:all .15s ease;font-size:14.5px;
+      touch-action:manipulation;user-select:none;
+    }
+    .option:active{background:rgba(22,201,141,.1);}
+    .option.selected {
+      background:linear-gradient(135deg,var(--emerald),var(--emerald-dark));
+      color:#06241a;border-color:var(--emerald);font-weight:600;
+      box-shadow:0 4px 12px rgba(22,201,141,.35);
+    }
+    table{width:100%;border-collapse:collapse;margin-top:4px;border-radius:10px;overflow:hidden;}
+    th,td{border:1px solid var(--border);padding:12px 6px;text-align:center;font-size:13.5px;}
+    th{background:linear-gradient(135deg,#0c3a2c,#0a2e26);color:var(--gold);font-weight:700;font-size:12px;letter-spacing:.5px;}
+    td{color:var(--text-light);background:rgba(255,255,255,.02);}
+    tr:nth-child(even) td{background:rgba(255,255,255,.04);}
+    .rank-1 td{background:linear-gradient(135deg,rgba(244,183,64,.22),rgba(244,183,64,.08))!important;font-weight:700;color:#fff;}
+    .badge{background:var(--danger);color:#fff;padding:3px 9px;border-radius:20px;font-size:12.5px;font-weight:600;}
+    #student-info{text-align:center;padding:4px 0 0;}
+    .student-info-note{color:var(--text-dim);font-size:13px;margin-top:-4px;margin-bottom:14px;}
+    .footer-note{text-align:center;padding:14px 16px 20px;color:var(--text-dim);font-size:11.5px;letter-spacing:.3px;}
+
+    /* LOADING */
+    #edu-loading {
+      position:fixed;inset:0;background:rgba(6,18,31,.92);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      z-index:9000;gap:16px;
+    }
+    .spinner {
+      width:48px;height:48px;border-radius:50%;
+      border:4px solid rgba(22,201,141,.2);
+      border-top-color:var(--emerald);
+      animation:spin .8s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg);}}
+    #edu-loading p{color:var(--text-dim);font-size:14px;margin:0;}
+
+    /* MODAL */
+    .modal-overlay {
+      position:fixed;inset:0;background:rgba(6,18,31,.85);
+      display:flex;align-items:center;justify-content:center;
+      z-index:9999;padding:20px;
+      animation:fadeIn .2s ease;
+    }
+    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+    .modal-box {
+      background:linear-gradient(160deg,#112e44,#0c2236);
+      border:1px solid var(--border);border-radius:18px;
+      padding:28px 22px;max-width:360px;width:100%;
+      box-shadow:0 24px 70px rgba(0,0,0,.65);
+      animation:slideUp .22s ease;text-align:center;
+    }
+    @keyframes slideUp{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+    .modal-icon{font-size:44px;margin-bottom:10px;display:block;}
+    .modal-title{font-size:19px;font-weight:700;color:#fff;margin:0 0 8px;}
+    .modal-msg{font-size:14px;color:var(--text-dim);line-height:1.75;margin:0 0 22px;}
+    .modal-msg strong{color:var(--emerald);}
+    .modal-btns{display:flex;gap:10px;flex-direction:column;}
+    .modal-btns.row{flex-direction:row;}
+    .mbtn {
+      flex:1;padding:13px;border:none;border-radius:10px;cursor:pointer;
+      font-size:15px;font-weight:700;font-family:'Hind Siliguri',sans-serif;
+      touch-action:manipulation;transition:transform .12s ease;
+    }
+    .mbtn:active{transform:scale(.97);}
+    .mbtn-primary{background:linear-gradient(135deg,var(--emerald),var(--emerald-dark));color:#06241a;}
+    .mbtn-danger{background:linear-gradient(135deg,var(--danger),#cc3a47);color:#fff;}
+    .mbtn-ghost{background:rgba(255,255,255,.07);color:var(--text-dim);border:1px solid var(--border);}
+    .result-score{font-size:54px;font-weight:700;color:var(--emerald);line-height:1;margin:4px 0 2px;}
+    .result-sub{font-size:13px;color:var(--text-dim);margin-bottom:18px;}
+
+    /* RETRY BUTTON */
+    .retry-btn {
+      display:inline-block;margin-top:12px;padding:10px 22px;
+      background:rgba(22,201,141,.15);color:var(--emerald);
+      border:1px solid var(--emerald);border-radius:8px;
+      cursor:pointer;font-size:14px;font-weight:600;
+      font-family:'Hind Siliguri',sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id='edu-loading'>
+  <div class='spinner'></div>
+  <p id='loading-msg'>পরীক্ষার তথ্য লোড হচ্ছে...</p>
+</div>
+
+<div class='modal-overlay' id='modal' style='display:none;'></div>
+
+<div class='edu-wrap'>
+  <div class='edu-header'>
+    <div class='brand-eyebrow'>Class 5 — HSC Academic Program</div>
+    <h1>Edu<span>Alimun</span> Exam Portal</h1>
+    <h3 id='display-subject'>লোডিং হচ্ছে...</h3>
+    <div class='exam-date-badge' id='display-date' style='display:none;'>&#128197; পরীক্ষার সময়সীমা: লোড হচ্ছে...</div>
+  </div>
+
+  <div class='nav-tabs'>
+    <div class='tab active' id='tab-exam' onclick='switchPage("exam-page")'>&#9997;&#65039; পরীক্ষা পেজ</div>
+    <div class='tab' id='tab-lb' onclick='switchPage("leaderboard-page")'>&#127942; লাইভ লিডারবোর্ড</div>
+  </div>
+
+  <div class='timer-box' id='timer'>&#9203; বাকি সময়: --:--</div>
+
+  <div class='page active' id='exam-page'>
+    <div id='student-info'>
+      <input id='student-name' placeholder='এখানে তোমার পুরো নাম লেখো...' type='text'/>
+      <div class='student-info-note'>সঠিক নাম লিখলে লিডারবোর্ডে তোমার নাম সঠিকভাবে প্রদর্শিত হবে।</div>
+      <button class='edu-btn' onclick='startExam()'>&#127937; পরীক্ষা শুরু করো</button>
+    </div>
+    <div id='quiz-area' style='display:none;'>
+      <div id='questions-load'></div>
+      <button class='edu-btn' id='sub-btn' onclick='askSubmit()'>&#128203; পরীক্ষা সাবমিট করুন</button>
+    </div>
+  </div>
+
+  <div class='page' id='leaderboard-page'>
+    <table>
+      <thead><tr><th>পজিশন</th><th>নাম</th><th>মার্ক</th><th>ভুল</th></tr></thead>
+      <tbody id='leaderboard-data'></tbody>
+    </table>
+  </div>
+
+  <div class='footer-note'>EduAlimun Academic Program &#169; সততা ও অধ্যবসায়ের মাধ্যমে সাফল্য</div>
+</div>
+
+<script type='text/javascript'>
+//<![CDATA[
+
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyx5C-OvcYQ0eX_vXGraYzyQr_tOEmlwSquG8-eWtfrv_c82jLYefBCLo56Jq3F8g1a/exec";
+var serverData = {exam:{subject:"",duration:0,questions:[],examDate:""},leaderboard:[]};
+var currentAnswers = {};
+var timerInterval = null;
+var examSubmitted = false;
+var loadRetryCount = 0;
+var MAX_RETRY = 3;
+
+/* ===== MODAL ===== */
+function showModal(html){
+  var m = document.getElementById('modal');
+  m.innerHTML = html;
+  m.style.display = 'flex';
+}
+function closeModal(){
+  document.getElementById('modal').style.display = 'none';
+}
+function modalAlert(icon, title, msg, btnLabel, btnClass, cb){
+  var cbStr = cb ? 'setTimeout(function(){(' + cb.toString() + ')();},80);' : '';
+  showModal(
+    '<div class="modal-box">' +
+    '<span class="modal-icon">' + icon + '</span>' +
+    '<div class="modal-title">' + title + '</div>' +
+    '<div class="modal-msg">' + msg + '</div>' +
+    '<div class="modal-btns">' +
+    '<button class="mbtn ' + (btnClass||'mbtn-primary') + '" onclick="closeModal();' + cbStr + '">' + btnLabel + '</button>' +
+    '</div></div>'
+  );
+}
+function showResult(score, wrong, total){
+  var pct = Math.round((score / total) * 100);
+  var grade = pct >= 80 ? '&#127942; চমৎকার!' : pct >= 60 ? '&#128077; ভালো!' : pct >= 40 ? '&#128218; আরও পড়ো' : '&#128170; চেষ্টা করো';
+
+  var reviewHtml = '';
+  serverData.exam.questions.forEach(function(q){
+    var sa = (currentAnswers[q.id] || '').trim();
+    var ca = (q.answer || '').trim();
+    var isCorrect = sa !== '' && sa === ca;
+    var isSkipped = sa === '';
+
+    var studentOptText = isSkipped
+      ? '<em style="color:var(--text-dim)">উত্তর দেওয়া হয়নি</em>'
+      : (q.options[parseInt(sa) - 1] || sa);
+    var correctOptText = q.options[parseInt(ca) - 1] || ca;
+
+    var cardBorder = isCorrect ? 'var(--emerald)' : (isSkipped ? 'var(--border)' : 'var(--danger)');
+    var icon = isCorrect ? '&#9989;' : (isSkipped ? '&#11036;' : '&#10060;');
+
+    reviewHtml +=
+      '<div style="text-align:left;border:1px solid ' + cardBorder + ';border-radius:10px;padding:11px 13px;margin-bottom:9px;background:rgba(255,255,255,.025);">' +
+      '<div style="font-size:13.5px;color:#fff;font-weight:600;margin-bottom:7px;">' + icon + ' ' + q.id + '. ' + q.question + '</div>';
+
+    if(!isCorrect){
+      reviewHtml +=
+        '<div style="font-size:13px;color:var(--danger);margin-bottom:3px;">&#128065; তুমি বেছেছিলে: ' + studentOptText + '</div>' +
+        '<div style="font-size:13px;color:var(--emerald);font-weight:600;">&#10004; সঠিক উত্তর: ' + correctOptText + '</div>';
+    } else {
+      reviewHtml +=
+        '<div style="font-size:13px;color:var(--emerald);">&#10004; সঠিক উত্তর: ' + correctOptText + '</div>';
+    }
+    reviewHtml += '</div>';
+  });
+
+  showModal(
+    '<div class="modal-box" style="max-width:420px;max-height:88vh;overflow-y:auto;">' +
+    '<span class="modal-icon">&#127881;</span>' +
+    '<div class="modal-title">পরীক্ষা সম্পন্ন!</div>' +
+    '<div class="result-score">' + score + '/' + total + '</div>' +
+    '<div class="result-sub">' + pct + '% &mdash; ' + grade + '</div>' +
+    '<div class="modal-msg" style="margin-bottom:14px;">&#9989; সঠিক: <strong>' + score + '</strong> টি &nbsp;|&nbsp; &#10060; ভুল: <strong style="color:var(--danger)">' + wrong + '</strong> টি</div>' +
+    '<div style="text-align:left;margin-bottom:10px;font-size:13px;color:var(--gold);font-weight:600;letter-spacing:.3px;">&#128203; উত্তরপত্র রিভিউ</div>' +
+    reviewHtml +
+    '<div class="modal-btns" style="margin-top:14px;"><button class="mbtn mbtn-primary" onclick="closeModal();goLeaderboard();">&#127942; লিডারবোর্ড দেখুন</button></div>' +
+    '</div>'
+  );
+}
+
+/* ===== DATA LOAD — FETCH ===== */
+function loadData(){
+  loadRetryCount = 0;
+  doLoad();
+}
+
+function doLoad(){
+  var url = SCRIPT_URL + "?action=getData&_ts=" + Date.now();
+  var timeoutId;
+  var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+  var signal = controller ? controller.signal : undefined;
+  timeoutId = setTimeout(function(){
+    if(controller) controller.abort();
+    onLoadFail('timeout');
+  }, 10000);
+
+  fetch(url, {
+    method: 'GET',
+    mode: 'cors',
+    signal: signal
+  })
+  .then(function(res){
+    clearTimeout(timeoutId);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  })
+  .then(function(data){
+    handleServerResponse(data);
+  })
+  .catch(function(err){
+    clearTimeout(timeoutId);
+    if(err && err.name === 'AbortError') return;
+    onLoadFail('error');
+  });
+}
+
+function onLoadFail(reason){
+  loadRetryCount++;
+  if(loadRetryCount <= MAX_RETRY){
+    document.getElementById('loading-msg').textContent = 'পুনরায় চেষ্টা করছি... (' + loadRetryCount + '/' + MAX_RETRY + ')';
+    setTimeout(doLoad, 2000);
+  } else {
+    document.getElementById('edu-loading').style.display = 'none';
+    document.getElementById('display-subject').innerHTML = 'ইন্টারনেট সংযোগ চেক করুন<br/><button class="retry-btn" onclick="retryLoad()">&#8635; আবার চেষ্টা করুন</button>';
+  }
+}
+
+function retryLoad(){
+  document.getElementById('edu-loading').style.display = 'flex';
+  document.getElementById('loading-msg').textContent = 'পরীক্ষার তথ্য লোড হচ্ছে...';
+  loadData();
+}
+
+function handleServerResponse(data){
+  serverData = data;
+  document.getElementById('display-subject').innerText = 'বিষয়: ' + (data.exam.subject || '');
+  if(data.exam.examDate){
+    document.getElementById('display-date').style.display = 'block';
+    document.getElementById('display-date').innerText = '🗓️ পরীক্ষার সময়সীমা: ' + data.exam.examDate;
+  } else {
+    document.getElementById('display-date').style.display = 'none';
+  }
+  renderLeaderboard();
+  document.getElementById('edu-loading').style.display = 'none';
+}
+
+/* ===== PAGE SWITCH ===== */
+function switchPage(pageId){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('tab-exam').classList.remove('active');
+  document.getElementById('tab-lb').classList.remove('active');
+  document.getElementById(pageId).classList.add('active');
+  if(pageId === 'exam-page'){
+    document.getElementById('tab-exam').classList.add('active');
+  }
+  if(pageId === 'leaderboard-page'){
+    document.getElementById('tab-lb').classList.add('active');
+    document.getElementById('edu-loading').style.display = 'flex';
+    document.getElementById('loading-msg').textContent = 'লিডারবোর্ড আপডেট হচ্ছে...';
+    loadData();
+  }
+}
+
+function goLeaderboard(){
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('student-info').style.display = 'block';
+  document.getElementById('student-name').value = '';
+  currentAnswers = {};
+  examSubmitted = false;
+  switchPage('leaderboard-page');
+}
+
+/* ===== START EXAM ===== */
+function startExam(){
+  var name = document.getElementById('student-name').value.trim();
+  if(!name){
+    modalAlert('📝','নাম লিখুন','পরীক্ষা শুরু করতে আপনার পুরো নাম লিখুন।','ঠিক আছে','mbtn-primary',null);
+    return;
+  }
+  if(!serverData.exam || !serverData.exam.questions || serverData.exam.questions.length === 0){
+    modalAlert('⚠️','পরীক্ষা পাওয়া যায়নি','এই মুহূর্তে কোনো পরীক্ষা সচল নেই। পেজটি রিফ্রেশ করুন।','রিফ্রেশ করুন','mbtn-primary',function(){location.reload();});
+    return;
+  }
+  showModal(
+    '<div class="modal-box">' +
+    '<span class="modal-icon">&#127937;</span>' +
+    '<div class="modal-title">পরীক্ষা শুরু করুন?</div>' +
+    '<div class="modal-msg">' +
+    'পরীক্ষার্থী: <strong>' + name + '</strong><br/>' +
+    'বিষয়: <strong>' + serverData.exam.subject + '</strong><br/>' +
+    'সময়: <strong>' + serverData.exam.duration + ' মিনিট</strong><br/>' +
+    'প্রশ্ন: <strong>' + serverData.exam.questions.length + '</strong> টি' +
+    '</div>' +
+    '<div class="modal-btns row">' +
+    '<button class="mbtn mbtn-ghost" onclick="closeModal();">বাতিল</button>' +
+    '<button class="mbtn mbtn-primary" onclick="closeModal();setTimeout(doStartExam,80);">&#9989; হ্যাঁ, শুরু করি</button>' +
+    '</div></div>'
+  );
+}
+
+function doStartExam(){
+  examSubmitted = false;
+  currentAnswers = {};
+  document.getElementById('student-info').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('timer').style.display = 'block';
+
+  var container = document.getElementById('questions-load');
+  container.innerHTML = '';
+  serverData.exam.questions.forEach(function(q){
+    var card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = '<div><strong>' + q.id + '. ' + q.question + '</strong></div>';
+    q.options.forEach(function(opt, idx){
+      var div = document.createElement('div');
+      div.className = 'option';
+      div.textContent = opt;
+      div.addEventListener('click', function(){
+        card.querySelectorAll('.option').forEach(function(o){o.classList.remove('selected');});
+        div.classList.add('selected');
+        currentAnswers[q.id] = String(idx + 1);
+      });
+      card.appendChild(div);
+    });
+    container.appendChild(card);
+  });
+
+  var timeLeft = serverData.exam.duration * 60;
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(function(){
+    var m = Math.floor(timeLeft / 60);
+    var s = timeLeft % 60;
+    document.getElementById('timer').textContent = '⏳ বাকি সময়: ' + m + ':' + (s < 10 ? '0' : '') + s;
+    if(timeLeft <= 0){ clearInterval(timerInterval); doSubmit(true); }
+    timeLeft--;
+  }, 1000);
+}
+
+/* ===== SUBMIT ===== */
+function askSubmit(){
+  if(examSubmitted) return;
+  var answered = Object.keys(currentAnswers).length;
+  var total = serverData.exam.questions.length;
+  var unanswered = total - answered;
+  var msg = answered + ' টি উত্তর দেওয়া হয়েছে।';
+  if(unanswered > 0){
+    msg += ' <span style="color:var(--danger)"><strong>' + unanswered + ' টি</strong> উত্তর বাকি আছে।</span>';
+  }
+  showModal(
+    '<div class="modal-box">' +
+    '<span class="modal-icon">&#128203;</span>' +
+    '<div class="modal-title">পরীক্ষা সাবমিট করবেন?</div>' +
+    '<div class="modal-msg">' + msg + '<br/>সাবমিট করার পর আর পরিবর্তন করা যাবে না।</div>' +
+    '<div class="modal-btns row">' +
+    '<button class="mbtn mbtn-ghost" onclick="closeModal();">&#128196; পরীক্ষা দিই</button>' +
+    '<button class="mbtn mbtn-danger" onclick="closeModal();setTimeout(function(){doSubmit(false);},80);">&#9989; সাবমিট করুন</button>' +
+    '</div></div>'
+  );
+}
+
+function doSubmit(isTimeUp){
+  if(examSubmitted) return;
+  examSubmitted = true;
+  if(timerInterval){ clearInterval(timerInterval); timerInterval = null; }
+  document.getElementById('timer').style.display = 'none';
+  var btn = document.getElementById('sub-btn');
+  btn.textContent = 'সাবমিট হচ্ছে...';
+  btn.disabled = true;
+
+  var name = document.getElementById('student-name').value.trim();
+  var score = 0, wrong = 0;
+   
+  serverData.exam.questions.forEach(function(q){
+    var sa = (currentAnswers[q.id] || '').trim();
+    var ca = (q.answer || '').trim();
+    if(sa !== '' && sa === ca){ score++; } else { wrong++; }
+  });
+  var total = serverData.exam.questions.length;
+
+  if(isTimeUp){
+    showModal(
+      '<div class="modal-box">' +
+      '<span class="modal-icon">⏳</span>' +
+      '<div class="modal-title">সময় শেষ!</div>' +
+      '<div class="modal-msg">সময় শেষ হওয়ায় পরীক্ষা স্বয়ংক্রিয়ভাবে সাবমিট হচ্ছে...</div>' +
+      '</div>'
+    );
+  }
+
+  fetch(SCRIPT_URL, {
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'text/plain'},
+    body: JSON.stringify({action:'submit', name:name, score:score, wrong:wrong})
+  }).then(function(){
+    btn.textContent = '📋 পরীক্ষা সাবমিট করুন';
+    btn.disabled = false;
+    showResult(score, wrong, total);
+    setTimeout(function(){ loadData(); }, 2500);
+  }).catch(function(){
+    btn.textContent = '📋 পরীক্ষা সাবমিট করুন';
+    btn.disabled = false;
+    showResult(score, wrong, total);
+  });
+}
+
+/* ===== LEADERBOARD ===== */
+function renderLeaderboard(){
+  var tbody = document.getElementById('leaderboard-data');
+  tbody.innerHTML = '';
+  var list = (serverData.leaderboard || []).slice();
+  list.sort(function(a,b){ return b.score - a.score || a.wrong - b.wrong; });
+  var top20 = list.slice(0,20);
+  if(top20.length === 0){
+    tbody.innerHTML = '<tr><td colspan="4" style="color:var(--text-dim);padding:20px;">কেউ পরীক্ষা দেয়নি</td></tr>';
+    return;
+  }
+  top20.forEach(function(u, i){
+    var tr = document.createElement('tr');
+    if(i === 0) tr.className = 'rank-1';
+    tr.innerHTML =
+      '<td>' + (i+1) + (i===0?' &#127942;':'') + '</td>' +
+      '<td>' + u.name + '</td>' +
+      '<td><strong>' + u.score + '</strong></td>' +
+      '<td><span class="badge">' + u.wrong + '</span></td>';
+    tbody.appendChild(tr);
+  });
+}
+
+/* ===== INIT ===== */
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', loadData);
+} else {
+  loadData();
+}
+
+//]]>
+</script>
+
+</body>
+</html>
